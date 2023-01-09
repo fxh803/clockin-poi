@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="icon\location.png" type ="image/x-icon">
+    <title>请登陆</title>
+    <link href="css\index.css" rel="stylesheet">
+</head>
+
+<body>
+    <form action="" id="Log_in" style="display: block;">
+        <h2>登录</h2>
+        user: <input type="text" id="user" placeholder="请输入账号" />
+        password: <input type="text" id="password" placeholder="请输入密码" />
+
+        <div class="mya">
+            <a href="javascript:void(0);" onclick="switchPage2()">忘记密码</a>
+            <a href="javascript:void(0);" onclick="switchPage()">注册</a>
+        </div>
+        <button type="button" onclick="checkAccount()">登录</button>
+    </form>
+
+    <form action="" id="sign_up" style="display: none;">
+        <h2>注册</h2>
+        user: <input type="text" id="newUser" placeholder="请输入账号" />
+        password: <input type="text" id="newPassword" placeholder="请输入密码" />
+        <div class="mya">
+            <a href="javascript:void(0);" onclick="switchPage()">登录</a>
+        </div>
+        <button type="button" onclick="upLoadAccount()">注册</button>
+    </form>
+
+    <form action="" id="passwordChanging" style="display: none;">
+        <h2>修改密码</h2>
+        user: <input type="text" id="changedUser" placeholder="请输入账号" />
+        oldpassword: <input type="text" id="oldPassword" placeholder="请输入旧密码" />
+        newpassword: <input type="text" id="changedPassword" placeholder="请输入新密码" />
+        <div class="mya">
+            <a href="javascript:void(0);" onclick="switchPage2()">登录</a>
+        </div>
+        <button type="button" onclick="renewAccount()">确定</button>
+    </form>
+
+<script src="lib/jquery.min.js"></script>
+<script src="lib/index.js"></script>
+</body>
+
+</html>

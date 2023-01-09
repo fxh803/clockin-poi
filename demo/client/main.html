@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="icon\location.png" type ="image/x-icon">
+  <title>ClockInPOI</title>
+  <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+  <link href="css\main.css" rel="stylesheet">
+  <script type="text/javascript">
+    window._AMapSecurityConfig = {
+      securityJsCode: '90f57196af5f4d833278e97fc3487945',
+    }
+  </script>
+  <script src='https://webapi.amap.com/maps?v=2.0&key=15ba9ece2c8e50434cb35ef8146ef1cf'></script>
+  <script src="https://webapi.amap.com/loader.js"></script>
+
+</head>
+
+<body>
+  <!-- 模态框1 -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          是否删除该点？
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="removePoint()">confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 模态框2 -->
+  <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="previewModal">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <img id="modal-img" src="" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 模态框3 -->
+  <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="previewModal2">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <img id="modal-img2" src="" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <nav class="navbar navbar-inverse">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#" style="color: whitesmoke;"><img src="icon\location.png" class="pull-left"
+            id="icon" />ClockInPOI</a>
+      </div>
+      <div class="navbar-collapse collapse">
+
+        <ul class="nav navbar-nav pull-right">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+              aria-expanded="false">
+              <img id="head-sculpture" src="icon\user.png" />
+              <span class="caret"></span>
+            </a>
+
+            <ul class="dropdown-menu">
+              <li><a href="#" id="username"></a></li>
+              <li role="separator" class="divider"></li>
+              <li>
+                <a href="#" id="change-head-sculpture-a">更改头像</a>
+                <input type="file" id="change-head-sculpture">
+              </li>
+              <li role="separator" class="divider"></li>
+              <li><a href="index.html">退出</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <!--/.nav-collapse -->
+    </div>
+  </nav>
+
+  <div class="container-fluid content">
+    <div class="row">
+      <div class="col-md-3 collapse in" id="visual-block">
+        <div class="page-header">
+          <h1>数据统计 <small>用户/数据信息</small></h1>
+        </div>
+        <div class="panel-group" id="accordion" role="tablist">
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne">
+              <h4 class="panel-title">
+                <div role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
+                  aria-controls="collapseOne" id="userWindow">
+                </div>
+              </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingTwo">
+              <h4 class="panel-title">
+                <div role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"
+                  aria-controls="collapseTwo" id="messageWindow">
+                </div>
+              </h4>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+              <div class="panel-body">
+                <div id="echart-container"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-md-6" id="map-block">
+        <div id="map-container"></div>
+        <div id="panel">
+        </div>
+        <button id="flex-btn3" class="btn hidden-xs hidden-sm" data-toggle="collapse" data-target="#visual-block"
+          onclick="flex3()">
+          <span id="label3" class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+        </button>
+        <button id="flex-btn" class="btn hidden-xs hidden-sm" data-toggle="collapse" data-target="#message-block"
+          onclick="flex()">
+          <span id="label" class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+        </button>
+        <button class="btn" id="hotbtn1" onclick="heatmap.show()">显示热力图</button>
+        <button class="btn" id="hotbtn2" onclick="heatmap.hide()">关闭热力图</button>
+      </div>
+      <div class="col-md-3 collapse in" id="message-block">
+        <div class="edit" id="edit">
+          <form>
+            <div class="form-group">
+              <label for="location"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> 添加位置</label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="location" placeholder="输入地点名称查询添加">
+                <span class="input-group-btn">
+                  <button type="button" id="addMarker" class="btn" data-toggle="tooltip" data-placement="bottom"
+                    title="查询不到？点我手动添加！">
+                    <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>手动添加
+                  </button>
+                </span>
+              </div><!-- /input-group -->
+              <label for="message"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> 添加留言</label>
+              <div class="desc">
+                <textarea rows="2" type="text" class="form-control" id="message"></textarea>
+                <div class="wordsNum">
+                  <span class="wordsNum_v1">0</span>
+                  <span class="wordsNum_v2">/200</span>
+                </div>
+              </div>
+              <button type='button' class="btn" id="inputFile-btn">
+                <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                添加图片</button>
+              <input type="file" id="inputFile">
+              <img id="preview-img" type="button" src="" data-toggle="modal" data-target="#previewModal" />
+            </div>
+            <button type="button" id="submit-btn" class="btn  btn-info" onclick="submitTo()" data-toggle="tooltip"
+              data-placement="bottom" title="提交所有内容">Submit</button>
+            <button type="button" id="cancel-btn" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom"
+              title="取消所有内容">Cancel</button>
+          </form>
+        </div>
+        <div id="interval">
+          <button id="flex-btn2" class="btn" onclick="flex2()">
+            <span id="label2" class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+          </button>
+        </div>
+
+        <div id="list">
+          <div class="input-group">
+            <input type="text" id="searchContent" class="form-control" placeholder="查找用户/地点/留言">
+            <span class="input-group-btn">
+              <button class="btn" type="button" onclick="searchList()">
+                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+              </button>
+            </span>
+          </div><!-- /input-group -->
+          <div class="list-group" id="list-group"></div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+  <script src="lib/jquery.min.js"></script>
+  <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+    integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+    crossorigin="anonymous"></script>
+  <script src="//a.amap.com/jsapi_demos/static/resource/heatmapData.js"></script>
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.3.2/dist/echarts.min.js"></script>
+  <script src="lib/main.js"></script>
+  <script src="lib/dynamicCharts.js"></script>
+</body>
+
+</html>

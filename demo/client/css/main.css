@@ -1,0 +1,307 @@
+#map-block {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    /* transition: all 0.3s; */
+    box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.5);
+}
+
+.btn-default {
+    font-size: 1%;
+    border: 0ch;
+}
+
+.btn-danger {
+    font-size: 1%;
+    border: 0ch;
+}
+
+.modal {
+    position: absolute;
+    top: 45px;
+}
+#real-img{
+    width: 100%;
+    height: 100%;
+}
+
+#message-block {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    transition: all 0.3s;
+    box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
+
+#visual-block {
+    height: 100%;
+    transition: all 0.3s;
+    box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    margin: 0;
+    text-align: center;
+}
+
+#map-container {
+    height: 100%;
+    margin: 0;
+
+}
+
+.navbar-inverse{
+    background-color:rgba(0, 0, 0, 0.8);
+}
+
+body,
+html {
+    height: 100%;
+    width: 100%;
+}
+
+.content {
+    position: absolute;
+    top: 0;
+    padding-top: 45px;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+.container{
+    width: 90%;
+}
+.row {
+    height: 100%;
+    padding: 5px;
+}
+
+.navbar {
+    min-height: 0;
+    z-index: 9999;
+    margin: 0;
+}
+
+.nav>li>a {
+    padding: 12.5px 0px;
+    height: 45px;
+}
+
+.navbar-brand {
+    padding: 12.5px 0px;
+    height: 45px;
+}
+#hotbtn1 {
+    position: absolute;
+    bottom: 0;
+    right: 100px;
+    margin: 0;
+    outline: 0;
+}
+
+#hotbtn2 {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 0;
+    outline: 0;
+}
+
+#panel {
+    position: absolute;
+    background-color: white;
+    max-height: 90%;
+    overflow-y: auto;
+    top: 10px;
+    right: 10px;
+    width: 280px;
+}
+
+#edit {
+    height: 35%;
+    transition: all 0.3s;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    width: 100%;
+    margin: 0;
+    padding: 10px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+#interval {
+    min-height: 30px;
+    height: 5%;
+    transition: all 0.3s;
+    text-align: center;
+    width: 100%;
+    margin: 0;
+    z-index: 9999;
+}
+
+#list {
+    height: 60%;
+    width: 100%;
+    margin: 0;
+    box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s;
+}
+#list-group{
+    height: 93%;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+#flex-btn {
+    position: absolute;
+    top: 40%;
+    right: 1px;
+    width: 10px;
+    height: 100px;
+    background-color: rgba(51, 122, 183,0.9);
+    margin: 0;
+    outline: 0;
+}
+
+#flex-btn2 {
+    left: 50%;
+    width: 100px;
+    height: 25px;
+    background-color: rgba(51, 122, 183,0.9);
+    padding: 0;
+    margin-bottom: 20px;
+    outline: 0;
+    z-index: 9999;
+}
+
+#flex-btn3 {
+    position: absolute;
+    top: 40%;
+    left: 1px;
+    width: 10px;
+    height: 100px;
+    background-color: rgba(51, 122, 183,0.9);
+    margin: 0;
+    outline: 0;
+}
+
+.dropdown-menu {
+    min-width: 120px;
+}
+.dropdown-menu li {
+    text-align: center;
+}
+.dropdown-toggle {
+    width: 64px;
+    text-align: center;
+    border-radius: 32px;
+}
+.caret {
+    transform: rotate(90deg);
+    transition: all 0.1s;
+}
+
+.dropdown:hover .caret {
+    transform: rotate(0deg);
+}
+
+#submit-btn,
+#cancel-btn {
+    font-size: 1%;
+    border-radius: 25px;
+}
+
+.list-group-item-text {
+    /* width: 100%;
+        height: auto; */
+    word-wrap: break-word;
+    word-break: break-all;
+    overflow: hidden;
+}
+
+.list-group-item {
+    box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.5);
+}
+
+#echart-container {
+    height: 300px;
+    width: 100%;
+}
+
+input,
+textarea::placeholder {
+    font-style: oblique
+}
+
+.page-header {
+    margin: 20px 0;
+}
+
+.windowImg {
+    width: 35px;
+    height: 35px;
+    margin-right: 5px;
+    float: left;
+}
+
+.windowImg:hover {
+    cursor: pointer;
+}
+
+#preview-img {
+    width: 64px;
+    height: 64px;
+    float: right;
+    transform: translate(18%);
+    display: none;
+    margin-right: 30px;
+}
+#preview-img:hover {
+    cursor: pointer;
+}
+.modal-body{
+   text-align: center;
+   overflow: hidden;
+   overflow-x: auto;
+   overflow-y: auto;
+}
+.desc{
+    box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.8);
+    padding: 5px;
+    margin-bottom: 15px;
+}
+#icon{
+    position: relative;
+    width: 38px;
+    height: 38px;
+    right: 10px;
+    bottom:9px;
+}
+#head-sculpture{
+    position: relative;
+    width: 32px;
+    height: 32px;
+    bottom:5px;
+    border-radius: 32px;
+}
+#change-head-sculpture{
+    display: none;
+}
+#inputFile{
+    display: none;
+}
+.listImg{
+    width: 32px;
+    height: 32px;
+}
+.heart{
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    bottom: 10px;
+    right: 30px;
+}
+.likeCount{
+    margin: 0;
+    position: absolute;
+    bottom: 8px;
+    right: 50px;
+}
