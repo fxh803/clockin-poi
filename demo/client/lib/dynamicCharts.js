@@ -29,7 +29,7 @@ function messageData() {
 let data = [];
 option = {
     title: {
-        text: '数据总量变化情况'
+        text: '数据总量(若有波动请刷新页面更新)'
     },
     tooltip: {
         trigger: 'axis',

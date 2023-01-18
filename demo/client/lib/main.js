@@ -85,10 +85,6 @@ $("#message").on("input propertychange", function () {
         $(".wordsNum_v1").css("color", "rgb(204, 0, 51)");
 });
 
-// //删除模态框关闭重新进入setinterval
-// $('#deleteModal').on('hide.bs.modal', function () {
-//     startInterval()
-// })
 //重新设置列表透明度
 function cleanSelect() {
     let item = document.getElementsByClassName('list-group-item');
@@ -100,8 +96,6 @@ function cleanSelect() {
 //查找
 function searchList() {
     cleanSelect()
-    //停止interval更新
-    stopInterval();
     var input = document.getElementById('searchContent').value
     var list = []
     var message = document.getElementsByClassName('list-group-item-text')
@@ -246,8 +240,6 @@ window.onload = function () {
     //设置用户名
     let div = document.getElementById('username');
     div.innerHTML = "欢迎回来！" + localStorage.string;
-    //开始刷新
-    startInterval();
     //请求头像信息
     let formData = new FormData();
     let user = localStorage.string;
@@ -265,6 +257,7 @@ window.onload = function () {
             }
         }
     })
+    refresh();
 }
 
 // 地图初始化
@@ -326,10 +319,7 @@ AMap.plugin(['AMap.PlaceSearch', 'AMap.AutoComplete'], function () {
     var autoOptions = {
         input: "location"
     };
-    //在poi选择中禁止setinterval启动
-    let clickListener2 = function () {
-        stopInterval();
-    }
+
     var auto = new AMap.AutoComplete(autoOptions);
     var placeSearch = new AMap.PlaceSearch({
         pageSize: 5, // 单页显示结果条数
@@ -345,9 +335,6 @@ AMap.plugin(['AMap.PlaceSearch', 'AMap.AutoComplete'], function () {
         //禁用手动坐标
         let manual = document.getElementById('addMarker')
         manual.setAttribute("disabled", "disabled")
-        //禁止setinterval启动
-        map.on("click", clickListener2);
-        stopInterval();
         //查找
         placeSearch.setCity(e.poi.adcode);
         placeSearch.search(e.poi.name, function (status, result) {//关键字查询查询
@@ -435,16 +422,55 @@ AMap.plugin(['AMap.PlaceSearch', 'AMap.AutoComplete'], function () {
             let name = document.getElementById("location")
             name.value = result.poiList.pois[0].name + '附近';
             keywords = result.poiList.pois[0].name + '附近';
+                //绑定点击事件
+                //鼠标选择中的dom
+                var poiMarker = document.getElementsByClassName('amap-marker');
+                var poiList = document.getElementsByClassName('poibox');
+                //为每个点和list添加事件
+                for (let i = 0; i < poiMarker.length; i++) {
+                    //绑定poi点与坐标获取
+                    poiMarker[i].addEventListener('click', function () {
+                        //点击的地名在列表active中
+                        name.value = result.poiList.pois[0].name + '附近';
+                        keywords = document.getElementsByClassName('poibox active')[0].children[1].innerText+ '附近';
+                        //更改输入框的信息为地名
+                        var text = document.getElementById('location')
+                        text.value = keywords
+                        //根据地名提取坐标poiPosition
+                        for (let i = 0; i < result.poiList.pois.length; i++) {
+                            //找到对应的坐标，push进poilocation
+                            if (result.poiList.pois[i].name == keywords) {
+                                poiPosition = []
+                                poiPosition.push(result.poiList.pois[i].location.lng, result.poiList.pois[i].location.lat)
+                                console.log(poiPosition)
+                            }
+                        }
+                    });
+                    //绑定poi列表与坐标获取
+                    poiList[i].addEventListener('click', function () {
+                        //点击的地名在列表active中
+                        name.value = result.poiList.pois[0].name + '附近';
+                        keywords = document.getElementsByClassName('poibox active')[0].children[1].innerText+ '附近';
+                        //更改输入框的信息为地名
+                        var text = document.getElementById('location')
+                        text.value = keywords
+                        //根据地名提取坐标poiPosition
+                        for (let i = 0; i < result.poiList.pois.length; i++) {
+                            //找到对应的坐标，push进poilocation
+                            if (result.poiList.pois[i].name == keywords) {
+                                poiPosition = []
+                                poiPosition.push(result.poiList.pois[i].location.lng, result.poiList.pois[i].location.lat)
+                                console.log(poiPosition)
+                            }
+                        }
+                    });
+                }
         });
-        //停止interval
-        stopInterval();
     };//clickListener
     //手选点btn
     var addMarkerBtn = document.getElementById('addMarker');
     addMarkerBtn.addEventListener('click', function () {
         map.on("click", clickListener);
-        //停止interval
-        stopInterval();
         //禁用poi坐标
         let input = document.getElementById("location")
         input.setAttribute('disabled', 'disabled')
@@ -457,13 +483,12 @@ AMap.plugin(['AMap.PlaceSearch', 'AMap.AutoComplete'], function () {
             map.remove(marker);
         //解除监听
         map.off('click', clickListener);
-        map.off('click', clickListener2);
         //解除禁用
         let manual = document.getElementById('addMarker');
         manual.removeAttribute("disabled");
         let input = document.getElementById('location');
         input.removeAttribute("disabled");
-        //清空输入框的信息
+        //清空text1，2两个输入框的信息
         let text = document.getElementById('location');
         text.value = "";
         text.placeholder = '输入地点名称查询添加'
@@ -479,8 +504,6 @@ AMap.plugin(['AMap.PlaceSearch', 'AMap.AutoComplete'], function () {
         file.value = '';
         //清空照片
         img = []
-        //重启刷新
-        startInterval()
         $(".wordsNum_v1").html('0');
         $(".wordsNum_v1").css("color", "rgb(51,51,51)");
     };
@@ -586,19 +609,6 @@ function removePoint() {
     cancelAll();
 }
 
-let startInterval = function () {
-    clearInterval(interval)
-    interval = setInterval(function () {//重启
-        refresh();
-        console.log("reflesh", interval)
-    }, 1000);
-
-}
-stopInterval = function () {
-    clearInterval(interval);//停止
-}
-//点击地图可以重启
-map.on("click", startInterval);
 //全局变量储存用户/信息统计数据
 let messageCount = 0
 let userCount = 0
@@ -798,7 +808,6 @@ function refresh() {
             //点击点或列表时触发的函数
             function markerClick(e) {
                 cleanSelect()
-                stopInterval()
                 //窗体
                 infoWindow.setContent(e.target.content);
                 infoWindow.open(map, e.target.getPosition());
@@ -816,11 +825,6 @@ function refresh() {
                     let modalImg2 = document.getElementById("modal-img2");
                     modalImg2.setAttribute("src", targetImg.src)
                     $('#previewModal2').modal('show')
-                })
-                //按x重启刷新
-                let cha = document.getElementsByClassName('amap-info-close')
-                cha[0].addEventListener('click', function () {
-                    startInterval()
                 })
 
 
