@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request,render_template
 from flask_cors import CORS
 from pymongo import MongoClient
 import pandas as pd
@@ -185,3 +185,9 @@ def editLike():
         likeCount = { "$set": { "likeCount":add } }
         db["test2"].update_one(data, likeCount)
         return {'likeCount': add}
+
+@app.route('/')
+def index():
+	return render_template("index.html")
+if __name__ == "__main__":
+    app.run()

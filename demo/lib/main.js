@@ -293,7 +293,7 @@ var icon1 = {
     // 图标类型，现阶段只支持 image 类型
     type: 'image',
     // 图片 url
-    image: 'icon/street-view.png',
+    image: '../icon/street-view.png',
     // 图片尺寸
     size: [32, 32],
     // 图片相对 position 的锚点，默认为 bottom-center
@@ -405,7 +405,7 @@ AMap.plugin(['AMap.PlaceSearch', 'AMap.AutoComplete'], function () {
         // 创建一个 icon
         var icon2 = new AMap.Icon({
             size: new AMap.Size(32, 32),
-            image: 'icon/pin.png',
+            image: '../icon/pin.png',
             imageSize: new AMap.Size(32, 32)
         });
         marker = new AMap.Marker({
