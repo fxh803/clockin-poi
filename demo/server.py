@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request,render_template
 from flask_cors import CORS
 from pymongo import MongoClient
 import pandas as pd
@@ -43,7 +43,7 @@ def checkAccount():
     data={"user":user,"password":password}
     find=db["test1"].find_one(data)
     if(find!=None):
-        return {'state': '1'}
+        return {'state': '1'}  
     else:
         return {'state': '0'}
 
@@ -186,3 +186,15 @@ def editLike():
         db["test2"].update_one(data, likeCount)
         return {'likeCount': add}
 
+
+@app.route('/')
+def index():
+    response = render_template('index.html')
+    return response
+    
+@app.route('/main')
+def main():
+    return render_template('main.html')
+
+if __name__ == '__main__':
+   app.run()

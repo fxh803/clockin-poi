@@ -293,7 +293,7 @@ var icon1 = {
     // 图标类型，现阶段只支持 image 类型
     type: 'image',
     // 图片 url
-    image: 'icon/street-view.png',
+    image: '../static/icon/street-view.png',
     // 图片尺寸
     size: [32, 32],
     // 图片相对 position 的锚点，默认为 bottom-center
@@ -405,7 +405,7 @@ AMap.plugin(['AMap.PlaceSearch', 'AMap.AutoComplete'], function () {
         // 创建一个 icon
         var icon2 = new AMap.Icon({
             size: new AMap.Size(32, 32),
-            image: 'icon/pin.png',
+            image: '../static/icon/pin.png',
             imageSize: new AMap.Size(32, 32)
         });
         marker = new AMap.Marker({
@@ -725,7 +725,7 @@ function refresh() {
                 a_text.setAttribute('class', 'list-group-item-text');
                 a_count.setAttribute('class', 'likeCount')
                 a_info.setAttribute('class', "listInfo")
-                a_heart.setAttribute('src', 'icon/heart.svg')
+                a_heart.setAttribute('src', '../static/icon/heart.svg')
                 a_heart.setAttribute('class', 'heart')
                 a_heart.setAttribute('clicked', '0')
                 a_heart.setAttribute('id', data[i].user + '-' + i + 'like');
@@ -758,7 +758,7 @@ function refresh() {
                 $('#' + data[i].user + '-' + i + 'like').on('click', function () {
                     let likeIcon = document.getElementById(data[i].user + '-' + i + 'like')
                     if (likeIcon.getAttribute('clicked') == '0') {
-                        likeIcon.setAttribute('src', 'icon/heart-free-icon-font.svg')
+                        likeIcon.setAttribute('src', '../static/icon/heart-free-icon-font.svg')
                         likeIcon.setAttribute('clicked', '1')
                         let formData = new FormData()
                         formData.append('user', data[i].user)
@@ -781,7 +781,7 @@ function refresh() {
                         })
                     }
                     else {
-                        likeIcon.setAttribute('src', 'icon/heart.svg')
+                        likeIcon.setAttribute('src', '../static/icon/heart.svg')
                         likeIcon.setAttribute('clicked', '0')
                         let formData = new FormData()
                         formData.append('user', data[i].user)

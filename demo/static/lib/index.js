@@ -29,7 +29,7 @@ function checkAccount() {
                 $('#user').val("");
                 $('#password').val("");
                 alert("密码正确")
-                window.location.replace("main.html");
+                window.location.replace("/main");
 
             }
 
