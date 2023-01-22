@@ -16,7 +16,7 @@ function checkAccount() {
     formData.append('user', user);
     formData.append('password', password);
     $.ajax({
-        url: "http://127.0.0.1:5000/checkAccount",
+        url: "http://39.108.108.16:5000/checkAccount",
         type: 'post',
         data: formData,
         contentType: false,
@@ -50,7 +50,7 @@ function upLoadAccount() {
     formData.append('user', user);
     formData.append('password', password);
     $.ajax({
-        url: "http://127.0.0.1:5000/upLoadAccount",
+        url: "http://39.108.108.16:5000/upLoadAccount",
         type: 'post',
         data: formData,
         contentType: false,
@@ -84,7 +84,7 @@ function renewAccount() {
     formData.append('oldpassword', oldpassword);
     formData.append('newpassword', newpassword);
     $.ajax({
-        url: "http://127.0.0.1:5000/renewAccount",
+        url: "http://39.108.108.16:5000/renewAccount",
         type: 'post',
         data: formData,
         contentType: false,
