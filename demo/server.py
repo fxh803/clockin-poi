@@ -6,7 +6,7 @@ import jieba
 app = Flask(__name__)
 cors = CORS(app)
 client = MongoClient("mongodb://localhost:27017/") #连接
-db= client['test1']
+db= client['clockin-poi']
   
 def wordsFilter(data,dataLength):
     review_all = [] #先做一个空List，用来装下所有关键词
@@ -41,7 +41,7 @@ def checkAccount():
     user = request.form.get('user')
     password = request.form.get('password')
     data={"user":user,"password":password}
-    find=db["test1"].find_one(data)
+    find=db["user"].find_one(data)
     if(find!=None):
         return {'state': '1'}  
     else:
@@ -53,9 +53,9 @@ def upLoadAccount():
     user = request.form.get('user')
     password = request.form.get('password')
     data={"user":user,"password":password,"sculpture":''}
-    find=db["test1"].find_one({"user":user})
+    find=db["user"].find_one({"user":user})
     if(find==None):
-        db["test1"].insert_one(data)
+        db["user"].insert_one(data)
         return {'state': '1'}
     else:
         return {'state': '0'}
@@ -67,13 +67,13 @@ def renewAccount():
     oldpassword = request.form.get('oldpassword')
     newpassword = request.form.get('newpassword')
     data={"user":user,"password":oldpassword}
-    find=db["test1"].find_one(data)
+    find=db["user"].find_one(data)
     if(find==None):
         return {'state': '0'}
     else:
         username = { "user":user }
         newvalues = { "$set": { "password":newpassword } }
-        db["test1"].update_one(username, newvalues)
+        db["user"].update_one(username, newvalues)
         return {'state': '1'}
 
 @app.route("/renewSculpture", methods=['POST'])
@@ -83,14 +83,14 @@ def renewSculpture():
     sculpture = request.form.get('sculpture')
     username = { "user":user }
     sculpture = { "$set": { "sculpture":sculpture } }
-    db["test1"].update_one(username, sculpture)
+    db["user"].update_one(username, sculpture)
     return {'state': '1'}
 
 @app.route("/getSculpture", methods=['POST'])
 def getSculpture():
     print('getSculpture')
     user = request.form.get('user')
-    find=db["test1"].find({"user":user})
+    find=db["user"].find({"user":user})
     df = pd.DataFrame(list(find))
     return {'sculpture': df.iloc[0]['sculpture']}
   
@@ -98,7 +98,7 @@ def getSculpture():
 @app.route("/getInfo", methods=['POST'])
 def getInfo():
     print('getInfo')
-    find=db["test2"].find()
+    find=db["data"].find()
     df = pd.DataFrame(list(find))
     result=[]
     for index, row in df.iterrows():
@@ -146,7 +146,7 @@ def uploadData():
     poi=request.form.get('poi')
     likeCount='0'
     data={"user":user,"message":message,'lng':lng,'lat':lat,'time':time,'img':img,'poi':poi,'likeCount':likeCount}
-    db["test2"].insert_one(data)
+    db["data"].insert_one(data)
     return {'state': '1'}
 
 @app.route("/removePoint", methods=['POST'])
@@ -158,7 +158,7 @@ def removePoint():
     message = request.form.get('message')
     time = request.form.get('time')
     data={'lng':lng,'lat':lat,'user':user,'message':message,'time':time}
-    db["test2"].delete_one(data)
+    db["data"].delete_one(data)
     return {'state': '1'}
 
 @app.route("/editLike", methods=['POST'])
@@ -171,7 +171,7 @@ def editLike():
     message= request.form.get('message')
     time = request.form.get('time')
     data={'user':user,'lng':lng,'lat':lat,'message':message,'time':time}
-    find=db["test2"].find(data)
+    find=db["data"].find(data)
     df = pd.DataFrame(list(find))
     add=int(df.likeCount[0])+1
     minus=int(df.likeCount[0])-1
@@ -179,11 +179,11 @@ def editLike():
     minus=str(minus)
     if(state=='0'):
         likeCount = { "$set": { "likeCount": minus} }
-        db["test2"].update_one(data, likeCount)
+        db["data"].update_one(data, likeCount)
         return {'likeCount':minus }
     else:
         likeCount = { "$set": { "likeCount":add } }
-        db["test2"].update_one(data, likeCount)
+        db["data"].update_one(data, likeCount)
         return {'likeCount': add}
 
 
