@@ -1,9 +1,9 @@
 //上传照片
-let previewImage = document.getElementById("preview-img");
-let modalImg = document.getElementById("modal-img");
+let previewImage = document.getElementById("preview-img");//输入框预览图
+let modalImg = document.getElementById("modal-img");//模态框预览图
 let img = []//储存要上传的照片
-const file = document.getElementById('inputFile');
-const fileButton = document.getElementById("inputFile-btn")
+const file = document.getElementById('inputFile');//实际的input
+const fileButton = document.getElementById("inputFile-btn")//表面的按钮
 fileButton.onclick = (event) => {
     file.click();
 }
@@ -21,17 +21,17 @@ file.onchange = (event) => {
     reader.readAsDataURL(fileData);//异步读取文件内容，结果用data:url的字符串形式表示
     /*当读取操作成功完成时调用*/
     reader.onload = function () {
-        img = reader.result
-        modalImg.setAttribute("src", reader.result)
-        previewImage.setAttribute("src", reader.result)
+        img = reader.result //结果储存在img中，等等submit上传
+        modalImg.setAttribute("src", reader.result)//更改模态框预览
+        previewImage.setAttribute("src", reader.result)//更改输入框预览
         previewImage.style.display = 'block'
     }
 }
 
 
 //修改头像
-const inputButton = document.getElementById("change-head-sculpture-a")
-const inputFile = document.getElementById("change-head-sculpture")
+const inputButton = document.getElementById("change-head-sculpture-a")//表面的按钮
+const inputFile = document.getElementById("change-head-sculpture")//实际的input
 inputButton.onclick = (event) => {
     inputFile.click();
 }
@@ -56,13 +56,13 @@ inputFile.onchange = (event) => {
         formData.append('user', user);
         formData.append('sculpture', this.result);
         $.ajax({
-            url: "http://39.108.108.16:5000/renewSculpture",
+            url: "http://127.0.0.1:5000/renewSculpture",
             type: 'post',
             data: formData,
             contentType: false,
             processData: false,
             success: function (response) {
-                console.log(response)
+                // console.log(response)
             }
         })
     }
@@ -112,7 +112,7 @@ function searchList() {
             var res = []//否则为空
         list.push({ 'pointId': pointId[i].id, 'user': user[i].innerHTML, 'message': message[i].innerHTML, 'info': res })
     }
-    console.log(list)
+    // console.log(list)
     //数组储存查询结果，-1失败
     var arr = list.filter(item => {
         return (item.info.indexOf(input) + item.user.indexOf(input) + item.message.indexOf(input)) > -3;
@@ -143,7 +143,7 @@ function flex() {
             block2.classList.replace('col-md-6', 'col-md-9');
             block3.classList.replace('col-md-3', 'col-md-0');
         }
-        else if (block2.classList == 'col-md-9' && block1.classList == 'col-md-0 collapse') {
+        else if (block2.classList == 'col-md-9' && block1.classList == 'col-md-0 hidden-xs hidden-sm collapse') {
             block2.classList.replace('col-md-9', 'col-md-12');
             block3.classList.replace('col-md-3', 'col-md-0');
         }
@@ -154,7 +154,7 @@ function flex() {
         let block2 = document.getElementById('map-block');
         let block3 = document.getElementById('message-block');
         let label = document.getElementById('label');
-        if (block2.classList == 'col-md-9' & block1.classList == 'col-md-3 collapse in') {
+        if (block2.classList == 'col-md-9' & block1.classList == 'col-md-3 hidden-xs hidden-sm collapse in') {
             block2.classList.replace('col-md-9', 'col-md-6');
             block3.classList.replace('col-md-0', 'col-md-3');
         }
@@ -166,11 +166,12 @@ function flex() {
         label.className = 'glyphicon glyphicon-menu-right';
     })
 }
-var acc = 0//一个点击记录
+
 //伸缩
+var acc = 0//一个点击记录
 function flex3() {
     acc = 1
-    $('#visual-block').on('hidden.bs.collapse', function () {
+    $('#visual-block').on('hidden.bs.collapse', function () {//这里如果没有acc变量，会触发visualblock里元素collapse
         let block1 = document.getElementById('visual-block');
         let block2 = document.getElementById('map-block');
         let block3 = document.getElementById('message-block');
@@ -180,13 +181,13 @@ function flex3() {
                 block2.classList.replace('col-md-6', 'col-md-9');
                 block1.classList.replace('col-md-3', 'col-md-0');
                 acc = 0
-                console.log('1')
+                // console.log('1')
             }
             else if (block2.classList == 'col-md-9' && block3.classList == 'col-md-0 collapse') {
                 block2.classList.replace('col-md-9', 'col-md-12');
                 block1.classList.replace('col-md-3', 'col-md-0');
                 acc = 0
-                console.log('2')
+                // console.log('2')
             }
         }
         label.className = 'glyphicon glyphicon-menu-right';
@@ -201,13 +202,13 @@ function flex3() {
                 block2.classList.replace('col-md-9', 'col-md-6');
                 block1.classList.replace('col-md-0', 'col-md-3');
                 acc = 0
-                console.log('3')
+                // console.log('3')
             }
             else if (block2.classList == 'col-md-12' && block3.classList == 'col-md-0 collapse') {
                 block2.classList.replace('col-md-12', 'col-md-9');
                 block1.classList.replace('col-md-0', 'col-md-3');
                 acc = 0
-                console.log('4')
+                // console.log('4')
             }
         }
         label.className = 'glyphicon glyphicon-menu-left';
@@ -235,6 +236,40 @@ function flex2() {
     }
 
 }
+//移动端上下滑动按钮
+var move = 0;
+function flex4() {
+    if (move == 0) {
+        let label = document.getElementById('label4');
+        label.className = "glyphicon glyphicon-triangle-top";
+        let element = document.getElementById("message-block");
+        element.scrollIntoView({ behavior: 'smooth' });
+        move = 1;
+    }
+    else {
+        let label = document.getElementById('label4');
+        label.className = "glyphicon glyphicon-triangle-bottom";
+        let element = document.getElementById("navbar");
+        element.scrollIntoView({ behavior: 'smooth' });
+        move = 0;
+    }
+}
+// 热力图按钮
+var hotbtn_click = 0
+function hotbtn() {
+    let hot = document.getElementById('hotbtn');
+    if (hotbtn_click == 0) {
+        heatmap.hide();
+        hot.innerHTML = '打开热力图';
+        hotbtn_click = 1
+    }
+    else {
+        heatmap.show();
+        hot.innerHTML = '关闭热力图';
+        hotbtn_click = 0
+    }
+}
+
 //加载用户信息
 window.onload = function () {
     //设置用户名
@@ -245,7 +280,7 @@ window.onload = function () {
     let user = localStorage.string;
     formData.append('user', user);
     $.ajax({
-        url: "http://39.108.108.16:5000/getSculpture",
+        url: "http://127.0.0.1:5000/getSculpture",
         type: 'post',
         data: formData,
         contentType: false,
@@ -313,7 +348,7 @@ let deletepoint = []//全局变量储存要删除的点的信息
 let manualPosition = []//全局变量储存手选点坐标
 let poiPosition = []//全局变量储存坐标
 var keywords = [] //获取输入框内地名信息
-let manualPositionName = []//全局变量储存手选点坐标附近的poi名称
+// let manualPositionName = []//全局变量储存手选点坐标附近的poi名称
 AMap.plugin(['AMap.PlaceSearch', 'AMap.AutoComplete'], function () {
     //poi选择点
     var autoOptions = {
@@ -346,13 +381,14 @@ AMap.plugin(['AMap.PlaceSearch', 'AMap.AutoComplete'], function () {
                     if (result.poiList.pois[i].name == keywords) {
                         poiPosition = []
                         poiPosition.push(result.poiList.pois[i].location.lng, result.poiList.pois[i].location.lat)
-                        console.log(poiPosition)
+                        // console.log(poiPosition)
                     }
                 }
                 //绑定点击事件
                 //鼠标选择中的dom
                 var poiMarker = document.getElementsByClassName('amap-marker');
                 var poiList = document.getElementsByClassName('poibox');
+                
                 //为每个点和list添加事件
                 for (let i = 0; i < poiMarker.length; i++) {
                     //绑定poi点与坐标获取
@@ -368,7 +404,7 @@ AMap.plugin(['AMap.PlaceSearch', 'AMap.AutoComplete'], function () {
                             if (result.poiList.pois[i].name == keywords) {
                                 poiPosition = []
                                 poiPosition.push(result.poiList.pois[i].location.lng, result.poiList.pois[i].location.lat)
-                                console.log(poiPosition)
+                                // console.log(poiPosition)
                             }
                         }
                     });
@@ -385,7 +421,7 @@ AMap.plugin(['AMap.PlaceSearch', 'AMap.AutoComplete'], function () {
                             if (result.poiList.pois[i].name == keywords) {
                                 poiPosition = []
                                 poiPosition.push(result.poiList.pois[i].location.lng, result.poiList.pois[i].location.lat)
-                                console.log(poiPosition)
+                                // console.log(poiPosition)
                             }
                         }
                     });
@@ -414,57 +450,43 @@ AMap.plugin(['AMap.PlaceSearch', 'AMap.AutoComplete'], function () {
             icon: icon2,
             anchor: 'bottom-center', // 设置锚点方位
         });
-        console.log(e.lnglat.getLng(), e.lnglat.getLat());
+        // console.log(e.lnglat.getLng(), e.lnglat.getLat());
         manualPosition.push(e.lnglat.getLng())
         manualPosition.push(e.lnglat.getLat())
         placeSearch.searchNearBy('', manualPosition, 200, function (status, result) {
-            manualPositionName.push(result.poiList.pois[0].name)
-            let name = document.getElementById("location")
-            name.value = result.poiList.pois[0].name + '附近';
+            // console.log(result)
+            // manualPositionName.push(result.poiList.pois[0].name)
+            let text = document.getElementById("location")
+            text.value = result.poiList.pois[0].name + '附近';
             keywords = result.poiList.pois[0].name + '附近';
-                //绑定点击事件
-                //鼠标选择中的dom
-                var poiMarker = document.getElementsByClassName('amap-marker');
-                var poiList = document.getElementsByClassName('poibox');
-                //为每个点和list添加事件
-                for (let i = 0; i < poiMarker.length; i++) {
-                    //绑定poi点与坐标获取
-                    poiMarker[i].addEventListener('click', function () {
-                        //点击的地名在列表active中
-                        name.value = result.poiList.pois[0].name + '附近';
-                        keywords = document.getElementsByClassName('poibox active')[0].children[1].innerText+ '附近';
-                        //更改输入框的信息为地名
-                        var text = document.getElementById('location')
-                        text.value = keywords
-                        //根据地名提取坐标poiPosition
-                        for (let i = 0; i < result.poiList.pois.length; i++) {
-                            //找到对应的坐标，push进poilocation
-                            if (result.poiList.pois[i].name == keywords) {
-                                poiPosition = []
-                                poiPosition.push(result.poiList.pois[i].location.lng, result.poiList.pois[i].location.lat)
-                                console.log(poiPosition)
-                            }
-                        }
-                    });
-                    //绑定poi列表与坐标获取
-                    poiList[i].addEventListener('click', function () {
-                        //点击的地名在列表active中
-                        name.value = result.poiList.pois[0].name + '附近';
-                        keywords = document.getElementsByClassName('poibox active')[0].children[1].innerText+ '附近';
-                        //更改输入框的信息为地名
-                        var text = document.getElementById('location')
-                        text.value = keywords
-                        //根据地名提取坐标poiPosition
-                        for (let i = 0; i < result.poiList.pois.length; i++) {
-                            //找到对应的坐标，push进poilocation
-                            if (result.poiList.pois[i].name == keywords) {
-                                poiPosition = []
-                                poiPosition.push(result.poiList.pois[i].location.lng, result.poiList.pois[i].location.lat)
-                                console.log(poiPosition)
-                            }
-                        }
-                    });
-                }
+            //绑定点击事件
+            //鼠标选择中的dom
+            var poiMarker = document.getElementsByClassName('amap-marker');
+            var poiList = document.getElementsByClassName('poibox');
+            // console.log(poiMarker.length,poiList.length)
+            //为每个点和list添加事件
+            for (let i = 0; i < poiMarker.length-1; i++) {//我们手选点也是poimarker类，所以减1
+                //绑定poi点与坐标获取
+                poiMarker[i].addEventListener('click', function () {
+                    //点击的地名在列表active中
+                    keywords = document.getElementsByClassName('poibox active')[0].children[1].innerText + '附近';
+                    //更改输入框的信息为地名
+                    text.value = keywords
+                    //更改坐标
+                    manualPosition = []
+                    manualPosition.push(result.poiList.pois[i].location.lng, result.poiList.pois[i].location.lat)
+                });
+                //绑定poi列表与坐标获取
+                poiList[i].addEventListener('click', function () {
+                    //点击的地名在列表active中
+                    keywords = document.getElementsByClassName('poibox active')[0].children[1].innerText + '附近';
+                    //更改输入框的信息为地名
+                    text.value = keywords
+                    //更改坐标
+                    manualPosition = []
+                    manualPosition.push(result.poiList.pois[i].location.lng, result.poiList.pois[i].location.lat)
+                });
+            }
         });
     };//clickListener
     //手选点btn
@@ -517,7 +539,7 @@ function submitTo() {
     let user = localStorage.string;
     let mytime = new Date();
     let time = mytime.getFullYear() + '/' + (mytime.getMonth() + 1) + '/' + mytime.getDate() + ' ' + mytime.getHours() + '时' + mytime.getMinutes() + '分' + mytime.getSeconds() + '秒'
-    console.log(manualPosition, poiPosition)
+    // console.log(manualPosition, poiPosition)
     if (message == []) {
         alert('信息为空')
         refresh();
@@ -542,13 +564,13 @@ function submitTo() {
         formData.append('img', img)
         formData.append('poi', keywords)
         $.ajax({
-            url: "http://39.108.108.16:5000/uploadData",
+            url: "http://127.0.0.1:5000/uploadData",
             type: 'post',
             data: formData,
             contentType: false,
             processData: false,
             success: function (response) {
-                console.log(response)
+                // console.log(response)
             }
         })
     }
@@ -564,13 +586,13 @@ function submitTo() {
         formData.append('img', img)
         formData.append('poi', keywords)
         $.ajax({
-            url: "http://39.108.108.16:5000/uploadData",
+            url: "http://127.0.0.1:5000/uploadData",
             type: 'post',
             data: formData,
             contentType: false,
             processData: false,
             success: function (response) {
-                console.log(response)
+                // console.log(response)
             }
         })
 
@@ -583,7 +605,7 @@ function submitTo() {
 }
 //删除点
 function removePoint() {
-    console.log(deletepoint)
+    // console.log(deletepoint)
     let formData = new FormData()
     let user = deletepoint[0];
     let lng = deletepoint[1];
@@ -596,13 +618,13 @@ function removePoint() {
     formData.append('lng', lng)
     formData.append('lat', lat)
     $.ajax({
-        url: "http://39.108.108.16:5000/removePoint",
+        url: "http://127.0.0.1:5000/removePoint",
         type: 'post',
         data: formData,
         contentType: false,
         processData: false,
         success: function (response) {
-            console.log(response)
+            // console.log(response)
         }
     })
     refresh();
@@ -615,8 +637,9 @@ let userCount = 0
 
 //刷新函数
 function refresh() {
+    // console.log('refresh')
     $.ajax({
-        url: "http://39.108.108.16:5000/getInfo",
+        url: "http://127.0.0.1:5000/getInfo",
         type: 'post',
         contentType: false,
         processData: false,
@@ -641,7 +664,7 @@ function refresh() {
             let thisCount = 0
             //信息窗口
             let infoWindow = new AMap.InfoWindow({ offset: new AMap.Pixel(0, -35) });
-            //此for循环将每个点的设置set好
+            //此for循环将每个点的设置set好（重要！）
             for (let i = 0; i < data.length; i++) {
                 //为热力图做数据准备
                 points.push({ 'lng': data[i].lng, 'lat': data[i].lat, 'count': 500 })
@@ -676,12 +699,12 @@ function refresh() {
                     text: text,
                 });
                 //设置文本换行
-                let slashedText=data[i].message;
-                let slash=0
-                for(let j=0;j<slashedText.length;j++){
-                    if (j%40==0&&j!=0){
-                        slashedText = slashedText.substring(0, (j+slash)) + '</br>' + slashedText.substring((j+slash), slashedText.length);
-                        slash=slash+5
+                let slashedText = data[i].message;
+                let slash = 0
+                for (let j = 0; j < slashedText.length; j++) {
+                    if (j % 40 == 0 && j != 0) {
+                        slashedText = slashedText.substring(0, (j + slash)) + '</br>' + slashedText.substring((j + slash), slashedText.length);
+                        slash = slash + 5
                     }
                 }
 
@@ -752,12 +775,12 @@ function refresh() {
                 //绑定删除按钮，点击后把坐标送到deletepoint数组
                 $('#' + data[i].user + '-' + i + 'btn').on('click', function () {
                     deletepoint = []
-                    deletepoint.push(data[i].user,data[i].lng, data[i].lat,data[i].message,data[i].time)
+                    deletepoint.push(data[i].user, data[i].lng, data[i].lat, data[i].message, data[i].time)
                 })
                 //绑定点赞
                 $('#' + data[i].user + '-' + i + 'like').on('click', function () {
                     let likeIcon = document.getElementById(data[i].user + '-' + i + 'like')
-                    if (likeIcon.getAttribute('clicked') == '0') {
+                    if (likeIcon.getAttribute('clicked') == '0') {//如果没有一开始没有点赞则点赞
                         likeIcon.setAttribute('src', '../static/icon/heart-free-icon-font.svg')
                         likeIcon.setAttribute('clicked', '1')
                         let formData = new FormData()
@@ -768,19 +791,19 @@ function refresh() {
                         formData.append('time', data[i].time)
                         formData.append('state', "1")
                         $.ajax({
-                            url: "http://39.108.108.16:5000/editLike",
+                            url: "http://127.0.0.1:5000/editLike",
                             type: 'post',
                             data: formData,
                             contentType: false,
                             processData: false,
                             success: function (response) {
-                                console.log(response)
+                                // console.log(response)
                                 let likeCount = document.getElementById(data[i].user + '-' + i + 'count')
-                                likeCount.innerHTML=response['likeCount']
+                                likeCount.innerHTML = response['likeCount']
                             }
                         })
                     }
-                    else {
+                    else {//如果没有点赞则取消点赞
                         likeIcon.setAttribute('src', '../static/icon/heart.svg')
                         likeIcon.setAttribute('clicked', '0')
                         let formData = new FormData()
@@ -791,15 +814,15 @@ function refresh() {
                         formData.append('time', data[i].time)
                         formData.append('state', "0")
                         $.ajax({
-                            url: "http://39.108.108.16:5000/editLike",
+                            url: "http://127.0.0.1:5000/editLike",
                             type: 'post',
                             data: formData,
                             contentType: false,
                             processData: false,
                             success: function (response) {
-                                console.log(response)
+                                // console.log(response)
                                 let likeCount = document.getElementById(data[i].user + '-' + i + 'count')
-                                likeCount.innerHTML=response['likeCount']
+                                likeCount.innerHTML = response['likeCount']
                             }
                         })
                     }
@@ -820,7 +843,7 @@ function refresh() {
                 let item = document.getElementById(e.target._opts.name);
                 item.style.opacity = "0.7"
                 //图片绑定模态框
-                $('#' + e.target._opts.name + "-img").on('click', function () {
+                $('#' + e.target._opts.name + "-img").on('click', function () {//id为：用户名-此用户信息编号-img
                     let targetImg = document.getElementById(e.target._opts.name + "-img")
                     let modalImg2 = document.getElementById("modal-img2");
                     modalImg2.setAttribute("src", targetImg.src)
@@ -844,7 +867,7 @@ function refresh() {
             messageCount = response['messageCount']
             userCount = response['userCount']
             messageWindow.innerHTML = "当前信息总量：" + messageCount + " 你已发布：" + thisCount
-            userWindow.innerHTML = "当前活跃用户总量：" + userCount
+            userWindow.innerHTML = "当前发布用户总量：" + userCount
             let hotWords = response['hotwords']
             let inputMessage = document.getElementById('message')
             inputMessage.removeAttribute('placeholder')

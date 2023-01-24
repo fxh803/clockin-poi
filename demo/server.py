@@ -5,7 +5,7 @@ import pandas as pd
 import jieba
 app = Flask(__name__)
 cors = CORS(app)
-client = MongoClient("mongodb://localhost:27017/") #连接
+client = MongoClient(host='localhost',port=27017,username='fxh',password='zlmfxh305') #连接
 db= client['clockin-poi']
   
 def wordsFilter(data,dataLength):

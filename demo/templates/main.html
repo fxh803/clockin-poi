@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="">
   <meta name="author" content="">
-  <link rel="icon" href="..\static\icon\location.png" type ="image/x-icon">
+  <link rel="icon" href="..\static\icon\location.png" type="image/x-icon">
   <title>ClockInPOI</title>
   <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
@@ -24,7 +24,7 @@
 </head>
 
 <body>
-  <!-- 模态框1 -->
+  <!-- 模态框1删除信息 -->
   <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
     <div class="modal-dialog modal-sm" role="document">
       <div class="modal-content">
@@ -38,7 +38,7 @@
       </div>
     </div>
   </div>
-  <!-- 模态框2 -->
+  <!-- 模态框2展示预览图 -->
   <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="previewModal">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
@@ -51,7 +51,7 @@
       </div>
     </div>
   </div>
-  <!-- 模态框3 -->
+  <!-- 模态框3展示文本框中图片 -->
   <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="previewModal2">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
@@ -64,11 +64,11 @@
       </div>
     </div>
   </div>
-  <nav class="navbar navbar-inverse">
+  <nav class="navbar navbar-inverse" id="navbar">
     <div class="container">
       <div class="navbar-header">
-        <a class="navbar-brand" href="#" style="color: whitesmoke;"><img src="..\static\icon\location.png" class="pull-left"
-            id="icon" />ClockInPOI</a>
+        <a class="navbar-brand" style="color: whitesmoke;"><img src="..\static\icon\location.png"
+            class="pull-left" id="icon" />ClockInPOI</a>
       </div>
       <div class="navbar-collapse collapse">
 
@@ -99,7 +99,7 @@
 
   <div class="container-fluid content">
     <div class="row">
-      <div class="col-md-3 collapse in" id="visual-block">
+      <div class="col-md-3 hidden-xs hidden-sm collapse in" id="visual-block">
         <div class="page-header">
           <h1>数据统计 <small>用户/数据信息</small></h1>
         </div>
@@ -130,7 +130,6 @@
             </div>
           </div>
         </div>
-
       </div>
       <div class="col-md-6" id="map-block">
         <div id="map-container"></div>
@@ -144,8 +143,10 @@
           onclick="flex()">
           <span id="label" class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
         </button>
-        <button class="btn" id="hotbtn1" onclick="heatmap.show()">显示热力图</button>
-        <button class="btn" id="hotbtn2" onclick="heatmap.hide()">关闭热力图</button>
+        <button id="flex-btn4" class="btn hidden-lg hidden-md" onclick="flex4()">
+          <span id="label4" class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+        </button>
+        <button class="btn" id="hotbtn" onclick="hotbtn()">关闭热力图</button>
       </div>
       <div class="col-md-3 collapse in" id="message-block">
         <div class="edit" id="edit">

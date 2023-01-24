@@ -20,7 +20,8 @@
     position: absolute;
     top: 45px;
 }
-#real-img{
+
+#real-img {
     width: 100%;
     height: 100%;
 }
@@ -41,6 +42,7 @@
     padding: 10px;
     margin: 0;
     text-align: center;
+    overflow: hidden;
 }
 
 #map-container {
@@ -49,8 +51,8 @@
 
 }
 
-.navbar-inverse{
-    background-color:rgba(0, 0, 0, 0.8);
+.navbar-inverse {
+    background-color: rgba(0, 0, 0, 0.8);
 }
 
 body,
@@ -67,9 +69,11 @@ html {
     width: 100%;
     margin: 0;
 }
-.container{
+
+.container {
     width: 90%;
 }
+
 .row {
     height: 100%;
     padding: 5px;
@@ -90,15 +94,9 @@ html {
     padding: 12.5px 0px;
     height: 45px;
 }
-#hotbtn1 {
-    position: absolute;
-    bottom: 0;
-    right: 100px;
-    margin: 0;
-    outline: 0;
-}
 
-#hotbtn2 {
+
+#hotbtn {
     position: absolute;
     bottom: 0;
     right: 0;
@@ -144,7 +142,8 @@ html {
     box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.5);
     transition: all 0.3s;
 }
-#list-group{
+
+#list-group {
     height: 93%;
     overflow: hidden;
     overflow-y: auto;
@@ -156,20 +155,23 @@ html {
     right: 1px;
     width: 10px;
     height: 100px;
-    background-color: rgba(51, 122, 183,0.9);
+    background-color: rgba(51, 122, 183, 0.9);
     margin: 0;
     outline: 0;
 }
 
 #flex-btn2 {
+    position: absolute;
+    /*参照物是父容器*/
     left: 50%;
+    transform: translateX(-50%);
     width: 100px;
     height: 25px;
-    background-color: rgba(51, 122, 183,0.9);
+    background-color: rgba(51, 122, 183, 0.9);
     padding: 0;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
     outline: 0;
-    z-index: 9999;
+    /* z-index: 9999; */
 }
 
 #flex-btn3 {
@@ -178,22 +180,56 @@ html {
     left: 1px;
     width: 10px;
     height: 100px;
-    background-color: rgba(51, 122, 183,0.9);
+    background-color: rgba(51, 122, 183, 0.9);
     margin: 0;
     outline: 0;
+}
+
+#flex-btn4 {
+    position: absolute;
+    /*参照物是父容器*/
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0%;
+    width: 100px;
+    height: 25px;
+    background-color: rgba(51, 122, 183, 0.9);
+    padding: 0;
+    outline: 0;
+    z-index: 9999;
+}
+
+#label4 {
+    font-size: 20px;
+    animation-name: label4;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes label4 {
+    from {
+        opacity: 0.5;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .dropdown-menu {
     min-width: 120px;
 }
+
 .dropdown-menu li {
     text-align: center;
 }
+
 .dropdown-toggle {
     width: 64px;
     text-align: center;
     border-radius: 32px;
 }
+
 .caret {
     transform: rotate(90deg);
     transition: all 0.1s;
@@ -254,50 +290,67 @@ textarea::placeholder {
     display: none;
     margin-right: 30px;
 }
+
 #preview-img:hover {
     cursor: pointer;
 }
-.modal-body img{
-   text-align: center;
-   overflow: hidden;
+
+.modal-body {
+    text-align: center;
+    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: auto;
 }
-.desc{
+
+.modal-body img {
+    max-width: 360px;
+    max-height: 360px;
+}
+
+.desc {
     box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.8);
     padding: 5px;
     margin-bottom: 15px;
 }
-#icon{
+
+#icon {
     position: relative;
     width: 38px;
     height: 38px;
     right: 10px;
-    bottom:9px;
+    bottom: 9px;
 }
-#head-sculpture{
+
+#head-sculpture {
     position: relative;
     width: 32px;
     height: 32px;
-    bottom:5px;
+    bottom: 5px;
     border-radius: 32px;
 }
-#change-head-sculpture{
+
+#change-head-sculpture {
     display: none;
 }
-#inputFile{
+
+#inputFile {
     display: none;
 }
-.listImg{
+
+.listImg {
     width: 32px;
     height: 32px;
 }
-.heart{
+
+.heart {
     width: 15px;
     height: 15px;
     position: absolute;
     bottom: 10px;
     right: 30px;
 }
-.likeCount{
+
+.likeCount {
     margin: 0;
     position: absolute;
     bottom: 8px;
