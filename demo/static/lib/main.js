@@ -56,7 +56,7 @@ inputFile.onchange = (event) => {
         formData.append('user', user);
         formData.append('sculpture', this.result);
         $.ajax({
-            url: "http://127.0.0.1:5000/renewSculpture",
+            url: "http://39.108.108.16:5000/renewSculpture",
             type: 'post',
             data: formData,
             contentType: false,
@@ -280,7 +280,7 @@ window.onload = function () {
     let user = localStorage.string;
     formData.append('user', user);
     $.ajax({
-        url: "http://127.0.0.1:5000/getSculpture",
+        url: "http://39.108.108.16:5000/getSculpture",
         type: 'post',
         data: formData,
         contentType: false,
@@ -564,7 +564,7 @@ function submitTo() {
         formData.append('img', img)
         formData.append('poi', keywords)
         $.ajax({
-            url: "http://127.0.0.1:5000/uploadData",
+            url: "http://39.108.108.16:5000/uploadData",
             type: 'post',
             data: formData,
             contentType: false,
@@ -586,7 +586,7 @@ function submitTo() {
         formData.append('img', img)
         formData.append('poi', keywords)
         $.ajax({
-            url: "http://127.0.0.1:5000/uploadData",
+            url: "http://39.108.108.16:5000/uploadData",
             type: 'post',
             data: formData,
             contentType: false,
@@ -618,7 +618,7 @@ function removePoint() {
     formData.append('lng', lng)
     formData.append('lat', lat)
     $.ajax({
-        url: "http://127.0.0.1:5000/removePoint",
+        url: "http://39.108.108.16:5000/removePoint",
         type: 'post',
         data: formData,
         contentType: false,
@@ -639,7 +639,7 @@ let userCount = 0
 function refresh() {
     // console.log('refresh')
     $.ajax({
-        url: "http://127.0.0.1:5000/getInfo",
+        url: "http://39.108.108.16:5000/getInfo",
         type: 'post',
         contentType: false,
         processData: false,
@@ -791,7 +791,7 @@ function refresh() {
                         formData.append('time', data[i].time)
                         formData.append('state', "1")
                         $.ajax({
-                            url: "http://127.0.0.1:5000/editLike",
+                            url: "http://39.108.108.16:5000/editLike",
                             type: 'post',
                             data: formData,
                             contentType: false,
@@ -814,7 +814,7 @@ function refresh() {
                         formData.append('time', data[i].time)
                         formData.append('state', "0")
                         $.ajax({
-                            url: "http://127.0.0.1:5000/editLike",
+                            url: "http://39.108.108.16:5000/editLike",
                             type: 'post',
                             data: formData,
                             contentType: false,
