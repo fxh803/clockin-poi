@@ -89,7 +89,7 @@ setInterval(function () {
             }
         ]
     });
-}, 1000);
+}, 5000);
 if (option && typeof option === 'object') {
     myChart.setOption(option);
 }
