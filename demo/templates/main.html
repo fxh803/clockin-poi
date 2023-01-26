@@ -64,6 +64,21 @@
       </div>
     </div>
   </div>
+  <!-- 模态框4关于 -->
+  <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="aboutModal" >
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          -这是一个基于地理空间信息的留言版，用户可以在地图上标记自己的兴趣点进行发言/分享图片</br>
+          -电脑端可以启用热力图功能和数据统计视图</br>
+          -不能同时登录两个账户，若刷新页面只会登录到后打开的账号
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <nav class="navbar navbar-inverse" id="nav">
     <div class="container">
       <div class="navbar-header">
@@ -92,6 +107,8 @@
                 <a href="#" id="change-head-sculpture-a">更改头像</a>
                 <input type="file" id="change-head-sculpture">
               </li>
+              <li role="separator" class="divider"></li>
+              <li><a href="#" data-toggle="modal" data-target= "#aboutModal")>关于</a></li>
               <li role="separator" class="divider"></li>
               <li><a href="/">退出</a></li>
             </ul>
@@ -151,7 +168,7 @@
         <button id="flex-btn4" class="btn hidden-lg hidden-md" onclick="flex4()">
           <span id="label4" class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
         </button>
-        <button class="btn" id="hotbtn" onclick="hotbtn()">关闭热力图</button>
+        <button class="btn hidden-xs hidden-sm" id="hotbtn" onclick="hotbtn()">关闭热力图</button>
       </div>
       <div class="col-md-3 collapse in" id="message-block">
         <div class="edit" id="edit">

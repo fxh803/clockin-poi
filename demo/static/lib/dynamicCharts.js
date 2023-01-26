@@ -17,7 +17,15 @@ var anchor = [
 function messageData() {
     now = new Date();
     nowDate = now.getFullYear() + '/' + (now.getMonth() + 1) + '/' + now.getDate() + ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
-    value = messageCount;
+    let value =[];
+    $.ajax({
+        url: "http://39.108.108.16:5000/getInfo",
+        type: 'post',
+        async: false,
+        success: function (response) {
+            value=response['messageCount']
+        }
+    })
     return {
         name: [nowDate],
         value: [

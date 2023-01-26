@@ -228,9 +228,9 @@ function flex2() {
     }
     else {
         block1.style.opacity = '1';
-        block1.style.height = '35%';
+        block1.style.height = '50%';
         block1.style.padding = '10px';
-        block2.style.height = '60%'
+        block2.style.height = '45%'
         let label = document.getElementById('label2');
         label.className = "glyphicon glyphicon-menu-up"
     }
@@ -322,18 +322,8 @@ map.plugin(["AMap.HeatMap"], function () {
     });
 
 })
-//点icon
-var icon1 = {
-    // 图标类型，现阶段只支持 image 类型
-    type: 'image',
-    // 图片 url
-    image: '../static/icon/street-view.png',
-    // 图片尺寸
-    size: [32, 32],
-    // 图片相对 position 的锚点，默认为 bottom-center
-    anchor: 'bottom-center',
-};
-//labelslayer
+
+//labelslayer点图层初始化
 var labelsLayer = new AMap.LabelsLayer({
     zooms: [3, 20],
     zIndex: 1000,
@@ -343,11 +333,13 @@ var labelsLayer = new AMap.LabelsLayer({
     allowCollision: true,
 });
 map.add(labelsLayer);
+
 let deletepoint = []//全局变量储存要删除的点的信息
 let manualPosition = []//全局变量储存手选点坐标
 let poiPosition = []//全局变量储存坐标
 var keywords = [] //获取输入框内地名信息
 // let manualPositionName = []//全局变量储存手选点坐标附近的poi名称
+
 AMap.plugin(['AMap.Geolocation', 'AMap.PlaceSearch', 'AMap.AutoComplete'], function () {
     //poi选择点
     var autoOptions = {
@@ -496,31 +488,31 @@ AMap.plugin(['AMap.Geolocation', 'AMap.PlaceSearch', 'AMap.AutoComplete'], funct
         input.setAttribute('disabled', 'disabled')
     });
 
-    //精确定位
-    var geolocation = new AMap.Geolocation({
-        // 是否使用高精度定位，默认：true
-        enableHighAccuracy: true,
-        // 设置定位超时时间，默认：无穷大
-        timeout: 10000,
-        // 定位按钮的停靠位置的偏移量，默认：Pixel(10, 20)
-        buttonOffset: new AMap.Pixel(10, 20),
-        //  定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
-        zoomToAccuracy: true,
-        //  定位按钮的排放位置,  RB表示右下
-        buttonPosition: 'RB'
-    })
-    map.addControl(geolocation);
-    geolocation.getCurrentPosition(function (status, result) {
-        if (status == 'complete') {
-            if (result.accuracy) {
-                console.log('精度：' + result.accuracy + ' 米');
-            }//如为IP精确定位结果则没有精度信息
-            console.log('是否经过偏移：' + (result.isConverted ? '是' : '否'));
-            console.log(result.position)
-        } else {
-            console.log('err' + result.message)
-        }
-    });
+    // //精确定位
+    // var geolocation = new AMap.Geolocation({
+    //     // 是否使用高精度定位，默认：true
+    //     enableHighAccuracy: true,
+    //     // 设置定位超时时间，默认：无穷大
+    //     timeout: 10000,
+    //     // 定位按钮的停靠位置的偏移量，默认：Pixel(10, 20)
+    //     buttonOffset: new AMap.Pixel(10, 20),
+    //     //  定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+    //     zoomToAccuracy: true,
+    //     //  定位按钮的排放位置,  RB表示右下
+    //     buttonPosition: 'RB'
+    // })
+    // map.addControl(geolocation);
+    // geolocation.getCurrentPosition(function (status, result) {
+    //     if (status == 'complete') {
+    //         if (result.accuracy) {
+    //             console.log('精度：' + result.accuracy + ' 米');
+    //         }//如为IP精确定位结果则没有精度信息
+    //         console.log('是否经过偏移：' + (result.isConverted ? '是' : '否'));
+    //         console.log(result.position)
+    //     } else {
+    //         console.log(result.message)
+    //     }
+    // });
 
     //总取消 
     cancelAll = function () {
@@ -699,7 +691,7 @@ function refresh() {
                     // 文字方向，有 icon 时为围绕文字的方向，没有 icon 时，则为相对 position 的位置
                     direction: 'right',
                     // 在 direction 基础上的偏移量
-                    offset: [0, -10],
+                    offset: [10, -10],
                     // 文字样式
                     style: {
                         // 字体大小
@@ -712,9 +704,38 @@ function refresh() {
                         strokeWidth: 2,
                     }
                 };
+                //请求头像信息
+                let iconSculpture = []
+                let formData = new FormData();
+                formData.append('user', data[i].user);
+                $.ajax({
+                    url: "http://39.108.108.16:5000/getSculpture",
+                    type: 'post',
+                    data: formData,
+                    contentType: false,//在传信息到后端时要设置
+                    processData: false,//在传信息到后端时要设置
+                    async: false,//把ajax中的iconSculpture值传递出来，要设置为同步
+                    success: function (response) {
+                        if (response['sculpture'] != '') 
+                            iconSculpture = response['sculpture'];
+                        else
+                        iconSculpture = '../static/icon/street-view.png'
+
+                    }
+                })
+                var icon1 = {
+                    // 图标类型，现阶段只支持 image 类型
+                    type: 'image',
+                    // 图片 url
+                    image: iconSculpture,
+                    // 图片尺寸
+                    size: [32, 32],
+                    // 图片相对 position 的锚点，默认为 bottom-center
+                    anchor: 'bottom-center',
+                };
                 //单个labelmarker
                 var labelMarker = new AMap.LabelMarker({
-                    name: data[i].user + '-' + i, // 此属性非绘制文字内容，仅最为标识使用
+                    name: data[i].user + '-' + i, // 此属性非绘制文字内容，仅为标识使用
                     position: [data[i].lng, data[i].lat],
                     zIndex: 16,
                     // 将第一步创建的 icon 对象传给 icon 属性
@@ -751,7 +772,7 @@ function refresh() {
                 let a_count = document.createElement('p');
                 //如果是本用户，列表框添加蓝色，删除按钮
                 if (localStorage.string == data[i].user) {
-                    thisCount++
+                    thisCount++//累计发布数
                     a.setAttribute('class', 'list-group-item active');
                     let a_btn = document.createElement('button');
                     a_btn.setAttribute('class', 'btn btn-danger pull-right');
