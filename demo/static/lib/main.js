@@ -298,7 +298,6 @@ window.onload = function () {
 // 地图初始化
 var clickListener, map = new AMap.Map('map-container', {
     zoom: 15,
-    center: [113.935382, 22.533205],
     mapStyle: 'amap://styles/whitesmoke',
 });
 //热力图初始化
@@ -349,18 +348,17 @@ let manualPosition = []//全局变量储存手选点坐标
 let poiPosition = []//全局变量储存坐标
 var keywords = [] //获取输入框内地名信息
 // let manualPositionName = []//全局变量储存手选点坐标附近的poi名称
-AMap.plugin(['AMap.PlaceSearch', 'AMap.AutoComplete'], function () {
+AMap.plugin(['AMap.Geolocation', 'AMap.PlaceSearch', 'AMap.AutoComplete'], function () {
     //poi选择点
     var autoOptions = {
         input: "location"
     };
-
     var auto = new AMap.AutoComplete(autoOptions);
     var placeSearch = new AMap.PlaceSearch({
         pageSize: 5, // 单页显示结果条数
         pageIndex: 1, // 页码
-        city: "0755", // 兴趣点城市
-        citylimit: true,  //是否强制限制在设置的城市内搜索
+        // city: "0755", // 兴趣点城市
+        // citylimit: true,  //是否强制限制在设置的城市内搜索
         map: map, // 展现结果的地图实例
         panel: "panel", // 结果列表将在此容器中进行展示。
         autoFitView: true // 是否自动调整地图视野使绘制的 Marker点都处于视口的可见范围
@@ -388,7 +386,7 @@ AMap.plugin(['AMap.PlaceSearch', 'AMap.AutoComplete'], function () {
                 //鼠标选择中的dom
                 var poiMarker = document.getElementsByClassName('amap-marker');
                 var poiList = document.getElementsByClassName('poibox');
-                
+
                 //为每个点和list添加事件
                 for (let i = 0; i < poiMarker.length; i++) {
                     //绑定poi点与坐标获取
@@ -465,7 +463,7 @@ AMap.plugin(['AMap.PlaceSearch', 'AMap.AutoComplete'], function () {
             var poiList = document.getElementsByClassName('poibox');
             // console.log(poiMarker.length,poiList.length)
             //为每个点和list添加事件
-            for (let i = 0; i < poiMarker.length-1; i++) {//我们手选点也是poimarker类，所以减1
+            for (let i = 0; i < poiMarker.length - 1; i++) {//我们手选点也是poimarker类，所以减1
                 //绑定poi点与坐标获取
                 poiMarker[i].addEventListener('click', function () {
                     //点击的地名在列表active中
@@ -496,6 +494,32 @@ AMap.plugin(['AMap.PlaceSearch', 'AMap.AutoComplete'], function () {
         //禁用poi坐标
         let input = document.getElementById("location")
         input.setAttribute('disabled', 'disabled')
+    });
+
+    //精确定位
+    var geolocation = new AMap.Geolocation({
+        // 是否使用高精度定位，默认：true
+        enableHighAccuracy: true,
+        // 设置定位超时时间，默认：无穷大
+        timeout: 10000,
+        // 定位按钮的停靠位置的偏移量，默认：Pixel(10, 20)
+        buttonOffset: new AMap.Pixel(10, 20),
+        //  定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+        zoomToAccuracy: true,
+        //  定位按钮的排放位置,  RB表示右下
+        buttonPosition: 'RB'
+    })
+    map.addControl(geolocation);
+    geolocation.getCurrentPosition(function (status, result) {
+        if (status == 'complete') {
+            if (result.accuracy) {
+                console.log('精度：' + result.accuracy + ' 米');
+            }//如为IP精确定位结果则没有精度信息
+            console.log('是否经过偏移：' + (result.isConverted ? '是' : '否'));
+            console.log(result.position)
+        } else {
+            console.log('err' + result.message)
+        }
     });
 
     //总取消 
@@ -890,9 +914,6 @@ function refresh() {
                 }
                 userNameList.appendChild(L)
             }
-
-
-
         }//success
     })
 }
