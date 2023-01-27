@@ -14,18 +14,24 @@ var anchor = [
     { name: anchorDate1, value: [anchorDate1, 0] },
     { name: anchorDate2, value: [anchorDate2, 0] }
 ];
-function messageData() {
-    now = new Date();
-    nowDate = now.getFullYear() + '/' + (now.getMonth() + 1) + '/' + now.getDate() + ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
-    let value =[];
+//全局贮存信息总数
+var val=[]
+//查询信息总数
+function getMessageCount(){
     $.ajax({
         url: "http://39.108.108.16:5000/getInfo",
         type: 'post',
-        async: false,
+        // async: false,
         success: function (response) {
-            value=response['messageCount']
+            val = response['messageCount'];
         }
     })
+}
+//设置好数据
+function messageData() {
+    now = new Date();
+    nowDate = now.getFullYear() + '/' + (now.getMonth() + 1) + '/' + now.getDate() + ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
+    let value =val;
     return {
         name: [nowDate],
         value: [
@@ -81,6 +87,7 @@ option = {
 };
 setInterval(function () {
     // data.shift();
+    getMessageCount();
     data.push(messageData());
     myChart.setOption({
         series: [
