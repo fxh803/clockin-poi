@@ -145,7 +145,7 @@ html {
 }
 
 #list-group {
-    height: 93%;
+    height: 88%;
     overflow: hidden;
     overflow-y: auto;
 }
@@ -237,6 +237,10 @@ html {
 }
 
 .dropdown:hover .caret {
+    transform: rotate(0deg);
+}
+
+.btn:hover .caret {
     transform: rotate(0deg);
 }
 
@@ -360,4 +364,12 @@ textarea::placeholder {
 
 .amap-copyright{
    z-index: -100;
+}
+
+#panel-btn{
+    display: none;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    
 }

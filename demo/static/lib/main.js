@@ -217,20 +217,23 @@ function flex3() {
 //伸缩
 function flex2() {
     let block1 = document.getElementById('edit');
-    let block2 = document.getElementById('list')
-    if (block1.style.opacity != '0') {
+    let block2 = document.getElementById('list');
+    let block3 = document.getElementById('list-group');
+    if (block1.style.opacity != '0') {//缩
         block1.style.height = '0';
         block1.style.opacity = '0';
         block1.style.padding = '0';
-        block2.style.height = '95%'
+        block2.style.height = '95%';
+        block3.style.height = '94%';
         let label = document.getElementById('label2');
         label.className = "glyphicon glyphicon-menu-down"
     }
-    else {
+    else {//放
         block1.style.opacity = '1';
         block1.style.height = '50%';
         block1.style.padding = '10px';
-        block2.style.height = '45%'
+        block2.style.height = '45%';
+        block3.style.height = '88%';
         let label = document.getElementById('label2');
         label.className = "glyphicon glyphicon-menu-up"
     }
@@ -240,20 +243,31 @@ function flex2() {
 var move = 0;
 function flex4() {
     if (move == 0) {
-        let label = document.getElementById('label4');
-        label.className = "glyphicon glyphicon-triangle-top";
         let element = document.getElementById("message-block");
         element.scrollIntoView({ behavior: 'smooth' });
+    }
+    else {
+        let element = document.getElementById("nav");
+        element.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+$(window).scroll(function () {
+    var scrollTop = $(this).scrollTop();
+    var scrollHeight = $(document).height();
+    var windowHeight = $(this).height();
+    console.log(scrollTop, scrollHeight, windowHeight)
+    if (scrollTop > scrollHeight / 3) {
+        let label = document.getElementById('label4');
+        label.className = "glyphicon glyphicon-triangle-top";
         move = 1;
     }
     else {
         let label = document.getElementById('label4');
         label.className = "glyphicon glyphicon-triangle-bottom";
-        let element = document.getElementById("nav");
-        element.scrollIntoView({ behavior: 'smooth' });
         move = 0;
     }
-}
+});
+
 // 热力图按钮
 var hotbtn_click = 0
 function hotbtn() {
@@ -269,7 +283,19 @@ function hotbtn() {
         hotbtn_click = 0
     }
 }
-
+//搜索栏展开按钮
+var panel_btn = 0
+function panelbtn() {
+    let pb = document.getElementById('panel-btn');
+    if (panel_btn == 0) {
+        pb.innerHTML = '<span class="caret"></span>展开';
+        panel_btn = 1
+    }
+    else {
+        pb.innerHTML = '<span class="caret"></span>收起';
+        panel_btn = 0
+    }
+}
 //加载用户信息
 window.onload = function () {
     //设置用户名
@@ -366,6 +392,8 @@ AMap.plugin(['AMap.Geolocation', 'AMap.PlaceSearch', 'AMap.AutoComplete'], funct
             //当查找成功
             if (result.info == 'OK') {
                 keywords = document.getElementById('location').value
+                let btn = document.getElementById('panel-btn');
+                btn.style.display = 'block';
                 ////按地名匹配坐标，push进poilocation
                 for (let i = 0; i < result.poiList.pois.length; i++) {
                     if (result.poiList.pois[i].name == keywords) {
@@ -444,38 +472,43 @@ AMap.plugin(['AMap.Geolocation', 'AMap.PlaceSearch', 'AMap.AutoComplete'], funct
         manualPosition.push(e.lnglat.getLng())
         manualPosition.push(e.lnglat.getLat())
         placeSearch.searchNearBy('', manualPosition, 200, function (status, result) {
-            // console.log(result)
-            // manualPositionName.push(result.poiList.pois[0].name)
-            let text = document.getElementById("location")
-            text.value = result.poiList.pois[0].name + '附近';
-            keywords = result.poiList.pois[0].name + '附近';
-            //绑定点击事件
-            //鼠标选择中的dom
-            var poiMarker = document.getElementsByClassName('amap-marker');
-            var poiList = document.getElementsByClassName('poibox');
-            // console.log(poiMarker.length,poiList.length)
-            //为每个点和list添加事件
-            for (let i = 0; i < poiMarker.length - 1; i++) {//我们手选点也是poimarker类，所以减1
-                //绑定poi点与坐标获取
-                poiMarker[i].addEventListener('click', function () {
-                    //点击的地名在列表active中
-                    keywords = document.getElementsByClassName('poibox active')[0].children[1].innerText + '附近';
-                    //更改输入框的信息为地名
-                    text.value = keywords
-                    //更改坐标
-                    manualPosition = []
-                    manualPosition.push(result.poiList.pois[i].location.lng, result.poiList.pois[i].location.lat)
-                });
-                //绑定poi列表与坐标获取
-                poiList[i].addEventListener('click', function () {
-                    //点击的地名在列表active中
-                    keywords = document.getElementsByClassName('poibox active')[0].children[1].innerText + '附近';
-                    //更改输入框的信息为地名
-                    text.value = keywords
-                    //更改坐标
-                    manualPosition = []
-                    manualPosition.push(result.poiList.pois[i].location.lng, result.poiList.pois[i].location.lat)
-                });
+            //当查找成功
+            if (result.info == 'OK') {
+                let btn = document.getElementById('panel-btn');
+                btn.style.display = 'block';
+                // console.log(result)
+                // manualPositionName.push(result.poiList.pois[0].name)
+                let text = document.getElementById("location")
+                text.value = result.poiList.pois[0].name + '附近';
+                keywords = result.poiList.pois[0].name + '附近';
+                //绑定点击事件
+                //鼠标选择中的dom
+                var poiMarker = document.getElementsByClassName('amap-marker');
+                var poiList = document.getElementsByClassName('poibox');
+                // console.log(poiMarker.length,poiList.length)
+                //为每个点和list添加事件
+                for (let i = 0; i < poiMarker.length - 1; i++) {//我们手选点也是poimarker类，所以减1
+                    //绑定poi点与坐标获取
+                    poiMarker[i].addEventListener('click', function () {
+                        //点击的地名在列表active中
+                        keywords = document.getElementsByClassName('poibox active')[0].children[1].innerText + '附近';
+                        //更改输入框的信息为地名
+                        text.value = keywords
+                        //更改坐标
+                        manualPosition = []
+                        manualPosition.push(result.poiList.pois[i].location.lng, result.poiList.pois[i].location.lat)
+                    });
+                    //绑定poi列表与坐标获取
+                    poiList[i].addEventListener('click', function () {
+                        //点击的地名在列表active中
+                        keywords = document.getElementsByClassName('poibox active')[0].children[1].innerText + '附近';
+                        //更改输入框的信息为地名
+                        text.value = keywords
+                        //更改坐标
+                        manualPosition = []
+                        manualPosition.push(result.poiList.pois[i].location.lng, result.poiList.pois[i].location.lat)
+                    });
+                }
             }
         });
     };//clickListener
@@ -516,6 +549,9 @@ AMap.plugin(['AMap.Geolocation', 'AMap.PlaceSearch', 'AMap.AutoComplete'], funct
 
     //总取消 
     cancelAll = function () {
+        //移除搜索框按钮
+        let btn = document.getElementById('panel-btn');
+        btn.style.display = 'none';
         //删除手选点
         if (typeof (marker) != "undefined")
             map.remove(marker);
@@ -614,7 +650,7 @@ function submitTo() {
 
     }
     else {
-        alert("坐标错误")
+        alert("坐标/地址有误，请确认输入正确地理位置")
     }
     refresh();
     cancelAll();
@@ -653,6 +689,8 @@ let userCount = 0
 
 //刷新函数
 function refresh() {
+    let btn = document.getElementById('panel-btn');
+    btn.style.display = 'none';
     // console.log('refresh')
     $.ajax({
         url: "http://39.108.108.16:5000/getInfo",
@@ -883,7 +921,7 @@ function refresh() {
                 $('#' + data[i].user + '-' + i).on('click', function () {
                     labelMarker.emit('click', { target: labelMarkers[i] });
                 })
-            }
+            }//for循环结束
 
             //热力点加载入热力图
             map.plugin(["AMap.HeatMap"], function () {
@@ -892,6 +930,7 @@ function refresh() {
                     max: 1000
                 });
             })
+
             //读取用户与数据信息
             let messageWindow = document.getElementById('messageWindow')
             let userWindow = document.getElementById('userWindow')
