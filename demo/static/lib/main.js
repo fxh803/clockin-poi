@@ -704,70 +704,72 @@ function refresh() {
                         strokeWidth: 2,
                     }
                 };
-                //请求头像信息
-                let iconSculpture = []
-                let formData = new FormData();
-                formData.append('user', data[i].user);
-                $.ajax({
-                    url: "http://39.108.108.16:5000/getSculpture",
-                    type: 'post',
-                    data: formData,
-                    contentType: false,//在传信息到后端时要设置
-                    processData: false,//在传信息到后端时要设置
-                    success: function (response) {
-                        if (response['sculpture'] != '')
-                            iconSculpture = response['sculpture'];
-                        else
-                            iconSculpture = '../static/icon/street-view.png'
-                        var icon1 = {
-                            // 图标类型，现阶段只支持 image 类型
-                            type: 'image',
-                            // 图片 url
-                            image: iconSculpture,
-                            // 图片尺寸
-                            size: [32, 32],
-                            // 图片相对 position 的锚点，默认为 bottom-center
-                            anchor: 'bottom-center',
 
-                        };
-                        //单个labelmarker
-                        var labelMarker = new AMap.LabelMarker({
-                            name: data[i].user + '-' + i, // 此属性非绘制文字内容，仅为标识使用
-                            position: [data[i].lng, data[i].lat],
-                            zIndex: 16,
-                            // 将第一步创建的 icon 对象传给 icon 属性
-                            icon: icon1,
-                            // 将第二步创建的 text 对象传给 text 属性
-                            text: text,
-                        });
-                        //设置文本换行
-                        let slashedText = data[i].message;
-                        let slash = 0
-                        for (let j = 0; j < slashedText.length; j++) {
-                            if (j % 40 == 0 && j != 0) {
-                                slashedText = slashedText.substring(0, (j + slash)) + '</br>' + slashedText.substring((j + slash), slashedText.length);
-                                slash = slash + 5
-                            }
-                        }
 
-                        //设置信息窗体
-                        if (data[i].img != "")
-                            labelMarker.content = "<img class='windowImg' id='" + data[i].user + '-' + i + '-img' + "'src=" + data[i].img + ">" + slashedText;
-                        else
-                            labelMarker.content = slashedText;
+                var icon1 = {
+                    // 图标类型，现阶段只支持 image 类型
+                    type: 'image',
+                    // 图片 url
+                    image: '../static/icon/street-view.png',
+                    // 图片尺寸
+                    size: [32, 32],
+                    // 图片相对 position 的锚点，默认为 bottom-center
+                    anchor: 'bottom-center',
 
-                        labelMarker.on('click', markerClick);
-                        //把每一个marker放入label markers
-                        labelMarkers.push(labelMarker)
-                        //绑定列表，当列表被点击缩放至点以及弹出窗体
-                        $('#' + data[i].user + '-' + i).on('click', function () {
-                            labelMarker.emit('click', { target: labelMarkers[i] });
-                        })
-                        //点加载入地图
-                        labelsLayer.add(labelMarkers);
+                };
+                //单个labelmarker
+                var labelMarker = new AMap.LabelMarker({
+                    name: data[i].user + '-' + i, // 此属性非绘制文字内容，仅为标识使用
+                    position: [data[i].lng, data[i].lat],
+                    zIndex: 16,
+                    // 将第一步创建的 icon 对象传给 icon 属性
+                    icon: icon1,
+                    // 将第二步创建的 text 对象传给 text 属性
+                    text: text,
+                });
+                //设置文本换行
+                let slashedText = data[i].message;
+                let slash = 0
+                for (let j = 0; j < slashedText.length; j++) {
+                    if (j % 40 == 0 && j != 0) {
+                        slashedText = slashedText.substring(0, (j + slash)) + '</br>' + slashedText.substring((j + slash), slashedText.length);
+                        slash = slash + 5
                     }
-                })
+                }
 
+                //设置信息窗体
+                if (data[i].img != "")
+                    labelMarker.content = "<img class='windowImg' id='" + data[i].user + '-' + i + '-img' + "'src=" + data[i].img + ">" + slashedText;
+                else
+                    labelMarker.content = slashedText;
+
+                //点击点或列表时触发的函数
+                function markerClick(e) {
+                    cleanSelect()
+                    //窗体
+                    infoWindow.setContent(e.target.content);
+                    infoWindow.open(map, e.target.getPosition());
+                    //缩放
+                    map.setZoomAndCenter(16, e.target.getPosition());
+                    //列表锚点定位
+                    let list = document.getElementById("list-group");
+                    list = document.querySelector('#' + e.target._opts.name).scrollIntoView({ behavior: 'smooth' })
+                    //设置选中样式
+                    let item = document.getElementById(e.target._opts.name);
+                    item.style.opacity = "0.7"
+                    //图片绑定模态框
+                    $('#' + e.target._opts.name + "-img").on('click', function () {//id为：用户名-此用户信息编号-img
+                        let targetImg = document.getElementById(e.target._opts.name + "-img")
+                        let modalImg2 = document.getElementById("modal-img2");
+                        modalImg2.setAttribute("src", targetImg.src)
+                        $('#previewModal2').modal('show')
+                    })
+                }
+                labelMarker.on('click', markerClick);
+                //把每一个marker放入label markers
+                labelMarkers.push(labelMarker)
+                //点加载入地图
+                labelsLayer.add(labelMarkers);
 
 
                 //添加列表项
@@ -877,30 +879,10 @@ function refresh() {
                         })
                     }
                 })
-            }
-            //点击点或列表时触发的函数
-            function markerClick(e) {
-                cleanSelect()
-                //窗体
-                infoWindow.setContent(e.target.content);
-                infoWindow.open(map, e.target.getPosition());
-                //缩放
-                map.setZoomAndCenter(16, e.target.getPosition());
-                //列表锚点定位
-                let list = document.getElementById("list-group");
-                list = document.querySelector('#' + e.target._opts.name).scrollIntoView({ behavior: 'smooth' })
-                //设置选中样式
-                let item = document.getElementById(e.target._opts.name);
-                item.style.opacity = "0.7"
-                //图片绑定模态框
-                $('#' + e.target._opts.name + "-img").on('click', function () {//id为：用户名-此用户信息编号-img
-                    let targetImg = document.getElementById(e.target._opts.name + "-img")
-                    let modalImg2 = document.getElementById("modal-img2");
-                    modalImg2.setAttribute("src", targetImg.src)
-                    $('#previewModal2').modal('show')
+                //绑定列表，当列表被点击缩放至点以及弹出窗体
+                $('#' + data[i].user + '-' + i).on('click', function () {
+                    labelMarker.emit('click', { target: labelMarkers[i] });
                 })
-
-
             }
 
             //热力点加载入热力图
